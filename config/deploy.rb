@@ -47,22 +47,22 @@ end
 namespace :foreman do
   desc "Export the Procfile to Ubuntu's upstart scripts"
   task :export, :roles => :app do
-    run "cd #{latest_release} && rvmsudo bundle exec foreman export upstart /etc/init -a #{application} -u #{user} -l #{deploy_to}/upstart_logs"
+    run "cd #{latest_release} && #{sudo} bundle exec foreman export upstart /etc/init -a #{application} -u #{user} -l #{deploy_to}/upstart_logs"
   end
 
   desc 'Start the application services'
   task :start, :roles => :app do
-    sudo "sudo start #{application}"
+    sudo "#{sudo} start #{application}"
   end
 
   desc 'Stop the application services'
   task :stop, :roles => :app do
-    sudo "sudo stop #{application}"
+    sudo "#{sudo} stop #{application}"
   end
 
   desc 'Restart the application services'
   task :restart, :roles => :app do
-    run "sudo start #{application} || sudo restart #{application}"
+    run "#{sudo} start #{application} || #{sudo} restart #{application}"
   end
 end
 

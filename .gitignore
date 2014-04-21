@@ -18,6 +18,7 @@ pickle-email-*.html
 .idea/
 .DS_Store
 .env
+config/database.yml
 deployment/tmp
 deployment/cookbooks
 .vagrant
