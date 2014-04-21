@@ -51,6 +51,8 @@ gem 'therubyracer', '~> 0.12.1'
 group :development do
   gem 'binding_of_caller'
   gem 'better_errors'
+  gem 'capistrano'
+  gem 'rvm-capistrano'
 end
 
 group :development, :test do
@@ -63,3 +65,8 @@ group :development, :test do
   gem 'webmock', require: false
   gem 'coveralls', require: false
 end
+
+group :production do
+  gem 'unicorn'
+end
+
