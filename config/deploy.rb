@@ -32,7 +32,7 @@ after 'deploy:update', 'foreman:export'
 after 'deploy:update', 'foreman:restart'
 
 namespace :deploy do
-  desc 'Link the .env environment and Procfile from shared/config into the new deploy directory'
+  desc 'Link the config files in the new current directory'
   task :symlink_configs, :roles => :app do
     run <<-CMD
       cd #{latest_release} && ln -nfs #{shared_path}/config/.env #{latest_release}/.env
@@ -40,6 +40,10 @@ namespace :deploy do
 
     run <<-CMD
       cd #{latest_release} && ln -nfs #{shared_path}/config/Procfile #{latest_release}/Procfile
+    CMD
+
+    run <<-CMD
+      cd #{latest_release} && ln -nfs #{shared_path}/config/database.yml #{latest_release}/config/
     CMD
   end
 end
