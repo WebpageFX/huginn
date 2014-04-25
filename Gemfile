@@ -52,6 +52,7 @@ group :development do
   gem 'binding_of_caller'
   gem 'better_errors'
   gem 'capistrano'
+  gem 'capistrano-unicorn', '~> 0.1.9', :require => false
   gem 'rvm-capistrano'
 end
 
@@ -67,7 +68,7 @@ group :development, :test do
 end
 
 group :production do
-  gem 'dotenv-rails'
+  gem 'dotenv-deployment'
   gem 'unicorn'
 end
 
