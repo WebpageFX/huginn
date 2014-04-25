@@ -1,9 +1,9 @@
-app_path = "/home/#{ENV['DEPLOY_USER']}/huginn/current"
+app_path = "/home/#{ENV['DEPLOY_USER']}/apps/huginn/current"
 
 worker_processes 2
 preload_app true
 timeout 180
-listen "/home/#{ENV['DEPLOY_USER']}/huginn/shared/pids/unicorn.socket"
+listen "/home/#{ENV['DEPLOY_USER']}/apps/huginn/shared/pids/unicorn.socket"
 
 working_directory app_path
 
@@ -14,7 +14,7 @@ stderr_path "log/unicorn.log"
 stdout_path "log/unicorn.log"
 
 # Set master PID location
-pid "/home/#{ENV['DEPLOY_USER']}/huginn/shared/pids/unicorn.pid"
+pid "/home/#{ENV['DEPLOY_USER']}/apps/huginn/shared/pids/unicorn.pid"
 
 before_fork do |server, worker|
   ActiveRecord::Base.connection.disconnect!
