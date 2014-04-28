@@ -4,7 +4,9 @@
 default_run_options[:pty] = true
 
 set :application, "huginn"
+set :bundle_flags, '--deployment --quiet --binstubs'
 set :deploy_to, ENV['DEPLOY_PATH']
+set :log_level, :debug
 set :user, ENV['DEPLOY_USER']
 set :use_sudo, false
 set :scm, :git
@@ -13,6 +15,9 @@ set :repository, "git@github.com:WebpageFX/huginn.git"
 set :branch, ENV['BRANCH'] || "master"
 set :deploy_via, :remote_cache
 set :keep_releases, 5
+set :default_environment, {
+    'PATH' => "$HOME/.rbenv/shims:$HOME/.rbenv/bin:$PATH"
+}
 
 puts "    Deploying #{branch}"
 
@@ -51,31 +56,24 @@ end
 namespace :foreman do
   desc "Export the Procfile to Ubuntu's upstart scripts"
   task :export, :roles => :app do
-    run "cd #{latest_release} && #{sudo} bundle exec foreman export upstart /etc/init -a #{application} -u #{user} -l #{deploy_to}/upstart_logs"
+    run "cd #{latest_release} && rbenv sudo bundle exec foreman export upstart /etc/init -a #{application} -u #{user} -l #{deploy_to}/upstart_logs"
   end
 
   desc 'Start the application services'
   task :start, :roles => :app do
-    sudo "#{sudo} start #{application}"
+    sudo "start #{application}"
   end
 
   desc 'Stop the application services'
   task :stop, :roles => :app do
-    sudo "#{sudo} stop #{application}"
+    sudo "stop #{application}"
   end
 
   desc 'Restart the application services'
   task :restart, :roles => :app do
-    run "#{sudo} start #{application} || #{sudo} restart #{application}"
+    sudo "restart #{application}"
   end
 end
-
-# If you want to use rvm on your server and have it maintained by Capistrano, uncomment these lines:
-#   set :rvm_ruby_string, '2.0.0@huginn'
-#   set :rvm_type, :user
-#   before 'deploy', 'rvm:install_rvm'
-#   before 'deploy', 'rvm:install_ruby'
-#   require "rvm/capistrano"
 
 # Load Capistrano additions
 Dir[File.expand_path("../../lib/capistrano/*.rb", __FILE__)].each{|f| load f }
